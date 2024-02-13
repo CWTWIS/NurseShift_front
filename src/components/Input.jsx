@@ -10,7 +10,13 @@ export default function Input({
   return (
     <div className="flex flex-col">
       {label}
-      <input placeholder={placeholder} />
+      <input
+        type={type}
+        placeholder={placeholder}
+        value={value}
+        name={name}
+        onChange={onChange}
+      />
     </div>
   );
 }

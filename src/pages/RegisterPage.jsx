@@ -10,8 +10,8 @@ export default function RegisterPage() {
         <RegisterForm />
         <p>
           already have an account?{" "}
-          <Link to="/login" className="underline">
-            Login
+          <Link to="/login" className="underline font-semibold">
+            Log in
           </Link>
         </p>
       </div>
