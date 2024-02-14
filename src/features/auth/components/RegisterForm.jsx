@@ -7,6 +7,8 @@ import Input from "../../../components/Input";
 import useAuth from "../../../hook/use-auth";
 
 import * as selectApi from "../../../api/select";
+import validateRegister from "../validations/validate.register";
+import { Navigate } from "react-router-dom";
 
 export default function RegisterForm() {
   const [position, setPosition] = useState([]);
@@ -21,6 +23,7 @@ export default function RegisterForm() {
     positionId: "",
     departmentId: "",
   });
+  const [error, setError] = useState({});
 
   const { register } = useAuth();
 
@@ -32,19 +35,20 @@ export default function RegisterForm() {
     try {
       e.preventDefault();
       console.log("submit");
-      // const validateError = validateRegister(input);
-      // if (validateError) {
-      //   return setError(validateError);
-      // }
+      const validateError = validateRegister(input);
+      if (validateError) {
+        return setError(validateError);
+      }
       await register(input);
       toast.success("register successfully");
+      <Navigate to="/login" />;
     } catch (err) {
-      // if (err.response?.data.message === "EMAIL_MOBILE_IN_USE") {
-      //   return setError({
-      //     emailOrMobile: "email address or mobile number already in use",
-      //   });
-      // }
-      // toast.error("Internal server error");
+      if (err.response?.data.message === "EMAIL_IN_USE") {
+        return setError({
+          email: "This mail address is already in use",
+        });
+      }
+      toast.error("Internal server error");
       toast.error(err.response?.data.message);
     }
   };
@@ -69,6 +73,7 @@ export default function RegisterForm() {
             name="firstName"
             value={input.firstName}
             onChange={handleChangeInput}
+            errorMessage={error.firstName}
           />
           <Input
             label="Last name"
@@ -77,6 +82,7 @@ export default function RegisterForm() {
             name="lastName"
             value={input.lastName}
             onChange={handleChangeInput}
+            errorMessage={error.lastName}
           />
         </div>
         <div className="flex gap-3">
@@ -84,7 +90,7 @@ export default function RegisterForm() {
             <label htmlFor="department">Department</label>
             <select
               id="department"
-              className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-300 focus:border-blue-500 block w-full p-2.5 "
+              className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 block w-full p-2.5 "
               value={input.departmentId}
               name="departmentId"
               onChange={handleChangeInput}
@@ -98,12 +104,15 @@ export default function RegisterForm() {
                 </option>
               ))}
             </select>
+            {error.departmentId ? (
+              <small className="text-red-500">{error.departmentId}</small>
+            ) : null}
           </div>
           <div className="flex flex-col flex-1">
             <label htmlFor="position">Position</label>
             <select
               id="position"
-              className="  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-300 focus:border-blue-500 block w-full p-2.5  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-2 focus:ring-blue-300 focus:border-blue-500 block w-full p-2.5  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               value={input.positionId}
               name="positionId"
               onChange={handleChangeInput}
@@ -117,6 +126,9 @@ export default function RegisterForm() {
                 </option>
               ))}
             </select>
+            {error.positionId ? (
+              <small className="text-red-500">{error.positionId}</small>
+            ) : null}
           </div>
         </div>
         <Input
@@ -126,6 +138,7 @@ export default function RegisterForm() {
           name="mobile"
           value={input.mobile}
           onChange={handleChangeInput}
+          errorMessage={error.mobile}
         />
         <Input
           label="Email address"
@@ -134,6 +147,7 @@ export default function RegisterForm() {
           name="email"
           value={input.email}
           onChange={handleChangeInput}
+          errorMessage={error.email}
         />
         <Input
           type="password"
@@ -143,6 +157,7 @@ export default function RegisterForm() {
           name="password"
           value={input.password}
           onChange={handleChangeInput}
+          errorMessage={error.password}
         />
         <Input
           type="password"
@@ -152,6 +167,7 @@ export default function RegisterForm() {
           name="confirmPassword"
           value={input.confirmPassword}
           onChange={handleChangeInput}
+          errorMessage={error.confirmPassword}
         />
       </div>
       <div className="pt-5 pb-1">
