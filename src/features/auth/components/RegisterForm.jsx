@@ -38,7 +38,6 @@ export default function RegisterForm() {
       // }
       await register(input);
       toast.success("register successfully");
-      onSuccess();
     } catch (err) {
       // if (err.response?.data.message === "EMAIL_MOBILE_IN_USE") {
       //   return setError({
@@ -60,9 +59,9 @@ export default function RegisterForm() {
     get();
   }, []);
   return (
-    <form onSubmit={handleFormSubmit}>
+    <form onSubmit={handleFormSubmit} className="min-w-[400px]">
       <div>
-        <div className="flex">
+        <div className="flex gap-3">
           <Input
             label="First name"
             placeholder="First name"
@@ -80,17 +79,17 @@ export default function RegisterForm() {
             onChange={handleChangeInput}
           />
         </div>
-        <div className="flex">
-          <div className="flex flex-col">
+        <div className="flex gap-3">
+          <div className="flex flex-col flex-1">
             <label htmlFor="department">Department</label>
             <select
               id="department"
-              className="select"
+              className=" border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-300 focus:border-blue-500 block w-full p-2.5 "
               value={input.departmentId}
               name="departmentId"
               onChange={handleChangeInput}
             >
-              <option disabled value="0">
+              <option selected value="0">
                 --select--
               </option>
               {department.map((el) => (
@@ -100,16 +99,16 @@ export default function RegisterForm() {
               ))}
             </select>
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col flex-1">
             <label htmlFor="position">Position</label>
             <select
               id="position"
-              className="select"
+              className="  border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-300 focus:border-blue-500 block w-full p-2.5  dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               value={input.positionId}
               name="positionId"
               onChange={handleChangeInput}
             >
-              <option disabled value="0">
+              <option selected value="0">
                 --select--
               </option>
               {position.map((el) => (
@@ -155,9 +154,11 @@ export default function RegisterForm() {
           onChange={handleChangeInput}
         />
       </div>
-      <Button bg="green" color="white" width="full">
-        SIGN UP
-      </Button>
+      <div className="pt-5 pb-1">
+        <Button bg="green" color="white" width="full">
+          SIGN UP
+        </Button>
+      </div>
     </form>
   );
 }

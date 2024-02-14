@@ -30,7 +30,7 @@ export default function LogInForm() {
   };
 
   return (
-    <form onSubmit={handleSubmitForm}>
+    <form onSubmit={handleSubmitForm} className="min-w-[400px]">
       <div>
         <div className="flex flex-col">
           <Input
@@ -52,9 +52,11 @@ export default function LogInForm() {
           />
         </div>
       </div>
-      <Button bg="green" color="white" width="full">
-        LOG IN
-      </Button>
+      <div className="pt-5 pb-1">
+        <Button bg="green" color="white" width="full">
+          LOG IN
+        </Button>
+      </div>
     </form>
   );
 }

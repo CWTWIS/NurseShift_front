@@ -16,7 +16,14 @@ const router = createBrowserRouter([
       </RedirectIfAuthenticated>
     ),
   },
-  { path: "/register", element: <RegisterPage /> },
+  {
+    path: "/register",
+    element: (
+      <RedirectIfAuthenticated>
+        <RegisterPage />
+      </RedirectIfAuthenticated>
+    ),
+  },
   {
     path: "/schedule",
     element: (
