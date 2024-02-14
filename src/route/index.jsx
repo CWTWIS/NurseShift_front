@@ -3,11 +3,32 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import AllSchedule from "../pages/AllSchedule";
 import PersonalSchedule from "../pages/PersonalSchedule";
+
+import RedirectIfAuthenticated from "../features/auth/components/RedirectIfAuthenticated";
+import ProtectedRoute from "../features/auth/components/ProtectedRoute";
+import Container from "../layouts/Container";
 const router = createBrowserRouter([
-  { path: "/login", element: <LoginPage /> },
+  {
+    path: "/login",
+    element: (
+      <RedirectIfAuthenticated>
+        <LoginPage />
+      </RedirectIfAuthenticated>
+    ),
+  },
   { path: "/register", element: <RegisterPage /> },
-  { path: "/schedule", element: <AllSchedule /> },
-  { path: "/schedule/:userId", element: <PersonalSchedule /> },
+  {
+    path: "/schedule",
+    element: (
+      <ProtectedRoute>
+        <Container />
+      </ProtectedRoute>
+    ),
+    children: [
+      { path: "", element: <AllSchedule /> },
+      { path: "personal", element: <PersonalSchedule /> },
+    ],
+  },
 ]);
 
 export default function Router() {

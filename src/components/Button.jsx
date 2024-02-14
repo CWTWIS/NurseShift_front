@@ -17,6 +17,8 @@ export default function Button({ children, bg, color, width, onClick }) {
   classes += color ? " " + colorClass[color] : "";
   classes += width ? " " + widthClass[width] : "";
   return (
-    <button className={` px-3 py-1 rounded-md ${classes}`}>{children}</button>
+    <button className={` px-3 py-1 rounded-md ${classes}`} onClick={onClick}>
+      {children}
+    </button>
   );
 }
