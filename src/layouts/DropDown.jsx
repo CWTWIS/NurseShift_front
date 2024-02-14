@@ -31,16 +31,16 @@ export default function DropDown() {
         <Avatar src={profileImage} />
       </div>
       {open && (
-        <div className="absolute right-0 translate-y-2">
-          <Avatar src={profileImage} />
-          <div>
+        <div className="bg-white flex flex-col gap-4 p-3 absolute right-0 translate-y-2 z-40 min-w-[200px] rounded-lg shadow-md">
+          <div className="flex gap-4 items-center">
+            <Avatar src={profileImage} />
             <span>
               {firstName} {lastName}
             </span>
-            <Button color="white" bg="blue" onClick={logout}>
-              Log out
-            </Button>
           </div>
+          <Button color="white" bg="blue" onClick={logout}>
+            Log out
+          </Button>
         </div>
       )}
     </div>
