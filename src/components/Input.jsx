@@ -4,13 +4,15 @@ export default function Input({
   value,
   onChange,
   name,
+  id,
   errorMessage,
   label,
 }) {
   return (
     <div className="flex flex-col">
-      {label}
+      <label htmlFor={id}>{label}</label>
       <input
+        id={id}
         type={type}
         placeholder={placeholder}
         value={value}

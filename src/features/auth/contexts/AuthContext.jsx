@@ -28,6 +28,12 @@ export default function AuthContextProvider({ children }) {
     }
   }, []);
 
+  const register = async (user) => {
+    const res = await authApi.register(user);
+    setAuthUser(res.data.newUser);
+    storeToken(res.data.accessToken);
+  };
+
   const login = async (credential) => {
     const res = await authApi.login(credential);
     setAuthUser(res.data.user);
@@ -35,7 +41,7 @@ export default function AuthContextProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ authUser, initialLoading, login }}>
+    <AuthContext.Provider value={{ authUser, initialLoading, login, register }}>
       {children}
     </AuthContext.Provider>
   );
