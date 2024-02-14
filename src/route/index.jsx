@@ -25,7 +25,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "/schedule",
+    path: "/",
     element: (
       <ProtectedRoute>
         <Container />

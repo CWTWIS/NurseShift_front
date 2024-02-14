@@ -26,6 +26,9 @@ export default function Input({
         name={name}
         onChange={onChange}
       />
+      {errorMessage ? (
+        <small className="text-red-500">{errorMessage}</small>
+      ) : null}
     </div>
   );
 }

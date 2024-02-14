@@ -3,5 +3,5 @@ import useAuth from "../../../hook/use-auth";
 
 export default function RedirectIfAuthenticated({ children }) {
   const { authUser } = useAuth();
-  return authUser ? <Navigate to="/schedule" /> : children;
+  return authUser ? <Navigate to="/" /> : children;
 }

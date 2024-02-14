@@ -4,10 +4,10 @@ import MenuItem from "./MenuItem";
 const menuList = [
   {
     id: 1,
-    to: "/schedule",
+    to: "/",
     title: "All",
   },
-  { id: 2, to: "/schedule/personal", title: "Personal" },
+  { id: 2, to: "/personal", title: "Personal" },
   //   { id: 3, to: "/request", title: "Request" },
 ];
 
