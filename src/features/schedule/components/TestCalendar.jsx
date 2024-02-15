@@ -13,6 +13,7 @@ import {
 import { useCallback, useMemo, useState } from "react";
 
 import profileImage from "../../../assets/profileImage.png";
+import useAuth from "../../../hook/use-auth";
 
 setOptions({
   theme: "ios",
@@ -300,6 +301,16 @@ export default function TestCalendar() {
   const [shiftNotes, setNotes] = useState("");
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
+  //handle edit schedule button
+  const [isHeadEdit, setIsHeadEdit] = useState(false);
+  const handleHeadEdit = () => {
+    setIsHeadEdit((prevState) => !prevState);
+  };
+
+  const {
+    authUser: { positionId },
+  } = useAuth();
+
   const saveEvent = useCallback(() => {
     const start = new Date(shiftDate[0]);
     const end = new Date(shiftDate[1]);
@@ -497,19 +508,27 @@ export default function TestCalendar() {
 
   return (
     <div>
+      {positionId === 1 && (
+        <Button
+          color={!isHeadEdit ? "primary" : "success"}
+          onClick={handleHeadEdit}
+        >
+          {!isHeadEdit ? "Edit schedule" : "Complete"}
+        </Button>
+      )}
       <Eventcalendar
         view={viewSettings}
         data={shifts}
         resources={staff}
         slots={mySlots}
-        invalid={myInvalid}
+        // invalid={myInvalid}
         dragToCreate={false}
         dragToResize={false}
         dragToMove={false}
-        clickToCreate={true}
+        clickToCreate={isHeadEdit && true}
         extendDefaultEvent={handleExtendDefaultEvent}
-        onEventClick={handleEventClick}
-        onEventCreated={handleEventCreated}
+        onEventClick={isHeadEdit && handleEventClick}
+        onEventCreated={isHeadEdit && handleEventCreated}
         onEventDeleted={handleEventDeleted}
         renderResource={renderMyResource}
         cssClass="md-employee-shifts"
