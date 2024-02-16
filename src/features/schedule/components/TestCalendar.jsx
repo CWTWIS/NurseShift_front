@@ -10,10 +10,12 @@ import {
   Snackbar,
   Textarea,
 } from "@mobiscroll/react";
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import profileImage from "../../../assets/profileImage.png";
 import useAuth from "../../../hook/use-auth";
+import useShift from "../../../hook/ีuse-shift";
+import * as shiftApi from "../../../api/shift";
 
 setOptions({
   theme: "ios",
@@ -310,6 +312,7 @@ export default function TestCalendar() {
   const {
     authUser: { positionId },
   } = useAuth();
+  const { shiftType, nurses, shiftsSameDepartment } = useShift();
 
   const saveEvent = useCallback(() => {
     const start = new Date(shiftDate[0]);
@@ -506,8 +509,18 @@ export default function TestCalendar() {
     setSnackbarOpen(false);
   }, []);
 
+  useEffect(() => {}, []);
+
   return (
     <div>
+      <div>
+        <p className="underline">Shift type</p>{" "}
+        {shiftType.map((el) => el.typeOfShift + " ")}
+        <p className="underline">Nurses in the same department</p>{" "}
+        {nurses.map((el) => el.firstName + " ")}
+        <p className="underline">Shifts from same department</p>{" "}
+        {shiftsSameDepartment.map((el) => el.id + " ")}
+      </div>
       {positionId === 1 && (
         <Button
           color={!isHeadEdit ? "primary" : "success"}
