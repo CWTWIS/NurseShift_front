@@ -11,6 +11,7 @@ import {
   setOptions,
   Snackbar,
   Textarea,
+  Dropdown,
 } from "@mobiscroll/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
 
@@ -23,69 +24,6 @@ setOptions({
   theme: "ios",
   themeVariant: "light",
 });
-
-const staff = [
-  {
-    id: 1,
-    name: "Jane Doe",
-    color: "#e20000",
-    title: "HEAD",
-    mobile: "0800000000",
-    img: profileImage,
-  },
-  {
-    id: 2,
-    name: "John Doe",
-    color: "#60e81a",
-    title: "REGISTERED NURSE",
-    img: profileImage,
-  },
-  {
-    id: 3,
-    name: "Jake Doe",
-    color: "#3ba7ff",
-    title: "REGISTERED NURSE",
-    img: profileImage,
-  },
-];
-
-const defaultShifts = [
-  {
-    start: "2024-02-12T07:00",
-    // end: "2024-02-12T13:00",
-    title: "MORNING",
-    resource: 2,
-    // slot: 1,
-  },
-  {
-    start: "2024-02-12T07:00",
-    // end: "2024-02-12T13:00",
-    title: "07:00 - 13:00",
-    resource: 3,
-    // slot: 1,
-  },
-  {
-    start: "2024-02-12T07:00",
-    // end: "2024-02-12T13:00",
-    title: "07:00 - 13:00",
-    resource: 6,
-    // slot: 1,
-  },
-  {
-    start: "2024-02-12T12:00",
-    // end: "2024-02-12T18:00",
-    title: "12:00 - 18:00",
-    resource: 4,
-    // slot: 2,
-  },
-  {
-    start: "2024-02-12T12:00",
-    // end: "2024-02-12T18:00",
-    title: "12:00 - 18:00",
-    resource: 5,
-    // slot: 2,
-  },
-];
 
 const viewSettings = {
   timeline: {
@@ -132,12 +70,27 @@ export default function TestCalendar() {
     setIsHeadEdit((prevState) => !prevState);
   };
 
+  //handle change select shiftType
+  const [selectedShiftType, setSelectedShiftType] = useState("");
+  const handleShiftTypeChange = (e) => {
+    setSelectedShiftType(e.target.value);
+  };
+
+  const getShiftTypeTitle = () => {
+    // console.log(selectedShiftType);
+    // if (!selectedShiftType) return "";
+    const selectedType = shiftType.find((el) => el.id === +selectedShiftType);
+    console.log("Selected shift type:", selectedType);
+    return selectedType && selectedType.typeOfShift;
+  };
+
   const saveEvent = useCallback(() => {
     const start = new Date(shiftDate[0]);
     const end = new Date(shiftDate[1]);
     const newEvent = {
       id: tempShift.id,
-      title: formatDate("HH:mm", start),
+      title: getShiftTypeTitle(),
+      // formatDate("HH:mm", start)
       // + " - "
       // + formatDate("HH:mm", end)
       notes: shiftNotes,
@@ -147,6 +100,11 @@ export default function TestCalendar() {
       // slot: tempShift.slot,
     };
     if (isEdit) {
+      // const updatedShifts = shifts.map((shift) =>
+      //   shift.id === tempShift.id ? newEvent : shift
+      // );
+      // setShifts(updatedShifts);
+
       // update the event in the list
       const index = shifts.findIndex((x) => x.id === tempShift.id);
       const newEventList = [...shifts];
@@ -392,13 +350,24 @@ export default function TestCalendar() {
         cssClass="employee-shifts-popup"
       >
         <div className="mbsc-form-group">
-          <select>
+          {/* <select onChange={handleShiftTypeChange} value={selectedShiftType}>
             {shiftType.map((el) => (
               <option key={el.id} value={el.id}>
                 {el.typeOfShift}
               </option>
             ))}
-          </select>
+          </select> */}
+          <Dropdown
+            label="Choose"
+            onChange={handleShiftTypeChange}
+            value={selectedShiftType}
+          >
+            {shiftType.map((el) => (
+              <option key={el.id} value={el.id}>
+                {el.typeOfShift}
+              </option>
+            ))}
+          </Dropdown>
           {/* <Input ref={startRef} dropdown={true} label="Shift start"></Input> */}
           {/* <Input ref={endRef} dropdown={true} label="Shift end"></Input> */}
           {/* <Datepicker
