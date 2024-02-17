@@ -5,7 +5,9 @@ import {
   Eventcalendar,
   formatDate,
   Input,
+  OptionsProvider,
   Popup,
+  Select,
   setOptions,
   Snackbar,
   Textarea,
@@ -45,227 +47,43 @@ const staff = [
     title: "REGISTERED NURSE",
     img: profileImage,
   },
-  {
-    id: 4,
-    name: "Jay Doe",
-    color: "#e25dd2",
-    title: "REGISTERED NURSE",
-    img: profileImage,
-  },
-  {
-    id: 5,
-    name: "Jai Doe",
-    color: "#f1e920",
-    title: "REGISTERED NURSE",
-    img: profileImage,
-  },
-  {
-    id: 6,
-    name: "Juju Doe",
-    color: "#1ac38d",
-    title: "REGISTERED NURSE",
-    img: profileImage,
-  },
 ];
 
 const defaultShifts = [
   {
     start: "2024-02-12T07:00",
-    end: "2024-02-12T13:00",
-    title: "07:00 - 13:00",
+    // end: "2024-02-12T13:00",
+    title: "MORNING",
     resource: 2,
-    slot: 1,
+    // slot: 1,
   },
   {
     start: "2024-02-12T07:00",
-    end: "2024-02-12T13:00",
+    // end: "2024-02-12T13:00",
     title: "07:00 - 13:00",
     resource: 3,
-    slot: 1,
+    // slot: 1,
   },
   {
     start: "2024-02-12T07:00",
-    end: "2024-02-12T13:00",
+    // end: "2024-02-12T13:00",
     title: "07:00 - 13:00",
     resource: 6,
-    slot: 1,
+    // slot: 1,
   },
   {
     start: "2024-02-12T12:00",
-    end: "2024-02-12T18:00",
+    // end: "2024-02-12T18:00",
     title: "12:00 - 18:00",
     resource: 4,
-    slot: 2,
+    // slot: 2,
   },
   {
     start: "2024-02-12T12:00",
-    end: "2024-02-12T18:00",
+    // end: "2024-02-12T18:00",
     title: "12:00 - 18:00",
     resource: 5,
-    slot: 2,
-  },
-  {
-    start: "2024-02-13T07:00",
-    end: "2024-02-13T13:00",
-    title: "07:00 - 13:00",
-    resource: 1,
-    slot: 1,
-  },
-  {
-    start: "2024-02-13T07:00",
-    end: "2024-02-13T13:00",
-    title: "07:00 - 13:00",
-    resource: 2,
-    slot: 1,
-  },
-  {
-    start: "2024-02-13T07:00",
-    end: "2024-02-13T13:00",
-    title: "07:00 - 13:00",
-    resource: 6,
-    slot: 1,
-  },
-  {
-    start: "2024-02-13T12:00",
-    end: "2024-02-13T18:00",
-    title: "12:00 - 18:00",
-    resource: 3,
-    slot: 2,
-  },
-  {
-    start: "2024-02-13T12:00",
-    end: "2024-02-13T18:00",
-    title: "12:00 - 18:00",
-    resource: 5,
-    slot: 2,
-  },
-  {
-    start: "2024-02-14T07:00",
-    end: "2024-02-14T13:00",
-    title: "07:00 - 13:00",
-    resource: 1,
-    slot: 1,
-  },
-  {
-    start: "2024-02-14T07:00",
-    end: "2024-02-14T13:00",
-    title: "07:00 - 13:00",
-    resource: 3,
-    slot: 1,
-  },
-  {
-    start: "2024-02-14T07:00",
-    end: "2024-02-14T13:00",
-    title: "07:00 - 13:00",
-    resource: 4,
-    slot: 1,
-  },
-  {
-    start: "2024-02-14T12:00",
-    end: "2024-02-14T18:00",
-    title: "12:00 - 18:00",
-    resource: 2,
-    slot: 2,
-  },
-  {
-    start: "2024-02-14T12:00",
-    end: "2024-02-14T18:00",
-    title: "12:00 - 18:00",
-    resource: 6,
-    slot: 2,
-  },
-  {
-    start: "2024-02-15T07:00",
-    end: "2024-02-15T13:00",
-    title: "07:00 - 13:00",
-    resource: 5,
-    slot: 1,
-  },
-  {
-    start: "2024-02-15T07:00",
-    end: "2024-02-15T13:00",
-    title: "07:00 - 13:00",
-    resource: 6,
-    slot: 1,
-  },
-  {
-    start: "2024-02-15T12:00",
-    end: "2024-02-15T18:00",
-    title: "12:00 - 18:00",
-    resource: 2,
-    slot: 2,
-  },
-  {
-    start: "2024-02-15T12:00",
-    end: "2024-02-15T18:00",
-    title: "12:00 - 18:00",
-    resource: 4,
-    slot: 2,
-  },
-  {
-    start: "2024-02-16T07:00",
-    end: "2024-02-16T13:00",
-    title: "07:00 - 13:00",
-    resource: 1,
-    slot: 1,
-  },
-  {
-    start: "2024-02-16T07:00",
-    end: "2024-02-16T13:00",
-    title: "07:00 - 13:00",
-    resource: 5,
-    slot: 1,
-  },
-  {
-    start: "2024-02-16T12:00",
-    end: "2024-02-16T18:00",
-    title: "12:00 - 18:00",
-    resource: 2,
-    slot: 2,
-  },
-  {
-    start: "2024-02-16T12:00",
-    end: "2024-02-16T18:00",
-    title: "12:00 - 18:00",
-    resource: 3,
-    slot: 2,
-  },
-  {
-    start: "2024-02-16T12:00",
-    end: "2024-02-16T18:00",
-    title: "12:00 - 18:00",
-    resource: 6,
-    slot: 2,
-  },
-];
-
-const mySlots = [
-  {
-    id: 1,
-    name: "MORNING",
-  },
-  {
-    id: 2,
-    name: "AFTERNOON",
-  },
-  {
-    id: 3,
-    name: "MIDNIGHT",
-  },
-];
-
-const myInvalid = [
-  {
-    start: "2024-02-15T00:00",
-    end: "2024-02-15T23:59",
-    resource: 4,
-    slot: 1,
-  },
-  {
-    start: "2024-02-13T00:00",
-    end: "2024-02-13T23:59",
-    resource: 2,
-    slot: 2,
+    // slot: 2,
   },
 ];
 
@@ -290,12 +108,17 @@ const responsivePopup = {
 };
 
 export default function TestCalendar() {
-  const [shifts, setShifts] = useState(defaultShifts);
+  const {
+    authUser: { positionId },
+  } = useAuth();
+  const { shiftType, nurses } = useShift();
+
+  const [shifts, setShifts] = useState([]);
   const [tempShift, setTempShift] = useState(null);
-  const [start, startRef] = useState(null);
-  const [end, endRef] = useState(null);
-  const [min, setMinTime] = useState("");
-  const [max, setMaxTime] = useState("");
+  // const [start, startRef] = useState(null);
+  // const [end, endRef] = useState(null);
+  // const [min, setMinTime] = useState("");
+  // const [max, setMaxTime] = useState("");
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isEdit, setEdit] = useState(false);
   const [headerText, setHeader] = useState("");
@@ -309,22 +132,19 @@ export default function TestCalendar() {
     setIsHeadEdit((prevState) => !prevState);
   };
 
-  const {
-    authUser: { positionId },
-  } = useAuth();
-  const { shiftType, nurses, shiftsSameDepartment } = useShift();
-
   const saveEvent = useCallback(() => {
     const start = new Date(shiftDate[0]);
     const end = new Date(shiftDate[1]);
     const newEvent = {
       id: tempShift.id,
-      title: formatDate("HH:mm", start) + " - " + formatDate("HH:mm", end),
+      title: formatDate("HH:mm", start),
+      // + " - "
+      // + formatDate("HH:mm", end)
       notes: shiftNotes,
       start: start,
-      end: end,
+      // end: end,
       resource: tempShift.resource,
-      slot: tempShift.slot,
+      // slot: tempShift.slot,
     };
     if (isEdit) {
       // update the event in the list
@@ -369,21 +189,21 @@ export default function TestCalendar() {
   const handleEventClick = useCallback(
     (args) => {
       const event = args.event;
-      const resource = staff.find((r) => r.id === event.resource);
-      const slot = mySlots.find((s) => s.id === event.slot);
+      // const resource = nurses.find((r) => r.id === event.resource);
+      // const slot = mySlots.find((s) => s.id === event.slot);
       setHeader(
         "<div>Edit " +
-          resource.name +
-          '\'s hours</div><div class="employee-shifts-day">' +
+          // resource.firstName +
+          '</div><div class="employee-shifts-day">' +
           formatDate("DDDD", new Date(event.start)) +
           " " +
-          slot.name +
+          // slot.name +
           "," +
           formatDate("DD MMMM YYYY", new Date(event.start)) +
           "</div>"
       );
-      setMinTime(event.slot === 1 ? "07:00" : "12:00");
-      setMaxTime(event.slot === 1 ? "13:00" : "18:00");
+      // setMinTime(event.slot === 1 ? "07:00" : "12:00");
+      // setMaxTime(event.slot === 1 ? "13:00" : "18:00");
       setEdit(true);
       setTempShift({ ...event });
       // fill popup form with event data
@@ -396,19 +216,19 @@ export default function TestCalendar() {
   const handleEventCreated = useCallback(
     (args) => {
       const event = args.event;
-      const slot = mySlots.find((s) => s.id === event.slot);
+      // const slot = mySlots.find((s) => s.id === event.slot);
       setHeader(
         '<div>New shift</div><div class="employee-shifts-day">' +
           formatDate("DDDD", new Date(event.start)) +
           " " +
-          slot.name +
+          // slot.name +
           "," +
           formatDate("DD MMMM YYYY", new Date(event.start)) +
           "</div>"
       );
       setEdit(false);
-      setMinTime(event.slot === 1 ? "07:00" : "12:00");
-      setMaxTime(event.slot === 1 ? "13:00" : "18:00");
+      // setMinTime(event.slot === 1 ? "07:00" : "12:00");
+      // setMaxTime(event.slot === 1 ? "13:00" : "18:00");
       setTempShift(event);
       // fill popup form with event data
       loadPopupForm(event);
@@ -467,14 +287,14 @@ export default function TestCalendar() {
     const start = new Date(
       d.getFullYear(),
       d.getMonth(),
-      d.getDate(),
-      args.slot === 1 ? 7 : 12
+      d.getDate()
+      // args.slot === 1 ? 7 : 12
     );
     const end = new Date(
       d.getFullYear(),
       d.getMonth(),
-      d.getDate(),
-      args.slot === 1 ? 13 : 18
+      d.getDate()
+      // args.slot === 1 ? 13 : 18
     );
 
     return {
@@ -488,12 +308,16 @@ export default function TestCalendar() {
   const renderMyResource = useCallback(
     (resource) => (
       <div className="employee-shifts-cont">
-        <div className="employee-shifts-name">{resource.name}</div>
-        <div className="employee-shifts-title">{resource.title}</div>
+        <div className="employee-shifts-name">
+          {resource.firstName} {resource.lastName}
+        </div>
+        <div className="employee-shifts-title">
+          {resource.position.typeOfPosition} NURSE
+        </div>
         {/* <div className="employee-shifts-mobile">Tel: {resource.mobile}</div> */}
         <img
           className="employee-shifts-avatar"
-          src={resource.img}
+          src={resource.img || profileImage}
           alt="Avatar"
         />
       </div>
@@ -509,7 +333,19 @@ export default function TestCalendar() {
     setSnackbarOpen(false);
   }, []);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const get = async () => {
+      const shiftsData = await shiftApi.fetchShiftsByDepartmentId();
+      const mappedShifts = shiftsData.data.shifts.map((shift) => ({
+        id: shift.id,
+        start: new Date(shift.date),
+        title: shift.shiftType.typeOfShift,
+        resource: shift.userId,
+      }));
+      setShifts(mappedShifts);
+    };
+    get();
+  }, [nurses]);
 
   return (
     <div>
@@ -519,7 +355,7 @@ export default function TestCalendar() {
         <p className="underline">Nurses in the same department</p>{" "}
         {nurses.map((el) => el.firstName + " ")}
         <p className="underline">Shifts from same department</p>{" "}
-        {shiftsSameDepartment.map((el) => el.id + " ")}
+        {shifts.map((el) => el.id + " ")}
       </div>
       {positionId === 1 && (
         <Button
@@ -532,14 +368,12 @@ export default function TestCalendar() {
       <Eventcalendar
         view={viewSettings}
         data={shifts}
-        resources={staff}
-        slots={mySlots}
-        // invalid={myInvalid}
+        resources={nurses}
         dragToCreate={false}
         dragToResize={false}
         dragToMove={false}
         clickToCreate={isHeadEdit && true}
-        extendDefaultEvent={handleExtendDefaultEvent}
+        // extendDefaultEvent={handleExtendDefaultEvent}
         onEventClick={isHeadEdit && handleEventClick}
         onEventCreated={isHeadEdit && handleEventCreated}
         onEventDeleted={handleEventDeleted}
@@ -558,9 +392,16 @@ export default function TestCalendar() {
         cssClass="employee-shifts-popup"
       >
         <div className="mbsc-form-group">
-          <Input ref={startRef} dropdown={true} label="Shift start"></Input>
-          <Input ref={endRef} dropdown={true} label="Shift end"></Input>
-          <Datepicker
+          <select>
+            {shiftType.map((el) => (
+              <option key={el.id} value={el.id}>
+                {el.typeOfShift}
+              </option>
+            ))}
+          </select>
+          {/* <Input ref={startRef} dropdown={true} label="Shift start"></Input> */}
+          {/* <Input ref={endRef} dropdown={true} label="Shift end"></Input> */}
+          {/* <Datepicker
             select="range"
             controls={["time"]}
             startInput={start}
@@ -574,11 +415,11 @@ export default function TestCalendar() {
             timeWheels="|h:mm A|"
             minTime={min}
             maxTime={max}
-          />
+          /> */}
         </div>
-        <div className="mbsc-form-group">
+        {/* <div className="mbsc-form-group">
           <Textarea label="Notes" value={shiftNotes} onChange={notesChange} />
-        </div>
+        </div> */}
         {isEdit && (
           <div className="mbsc-button-group">
             <Button

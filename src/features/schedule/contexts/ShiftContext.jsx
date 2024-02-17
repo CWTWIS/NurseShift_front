@@ -8,7 +8,7 @@ export const ShiftContext = createContext();
 export default function ShiftContextProvider({ children }) {
   const [shiftType, setShiftType] = useState([]);
   const [nurses, setNurses] = useState([]);
-  const [shiftsSameDepartment, setShiftsSameDepartment] = useState([]);
+  // const [shiftsSameDepartment, setShiftsSameDepartment] = useState([]);
   const [personalShifts, setPersonalShifts] = useState([]);
 
   const { authUser } = useAuth();
@@ -18,8 +18,8 @@ export default function ShiftContextProvider({ children }) {
       setShiftType(getShiftType.data.shiftType);
       const getNurses = await shiftApi.fetchNursesInTheSameDepartment();
       setNurses(getNurses.data.allUsers);
-      const getShifts = await shiftApi.fetchShiftsByDepartmentId();
-      setShiftsSameDepartment(getShifts.data.shifts);
+      // const getShifts = await shiftApi.fetchShiftsByDepartmentId();
+      // setShiftsSameDepartment(getShifts.data.shifts);
       const getPersonalShifts = await shiftApi.fetchShiftsByUserId();
       setPersonalShifts(getPersonalShifts.data.shifts);
     };
@@ -28,7 +28,12 @@ export default function ShiftContextProvider({ children }) {
 
   return (
     <ShiftContext.Provider
-      value={{ shiftType, nurses, shiftsSameDepartment, personalShifts }}
+      value={{
+        shiftType,
+        nurses,
+        // shiftsSameDepartment,
+        personalShifts,
+      }}
     >
       {children}
     </ShiftContext.Provider>
