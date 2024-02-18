@@ -14,6 +14,7 @@ import {
   Dropdown,
 } from "@mobiscroll/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { toast } from "react-toastify";
 
 import profileImage from "../../../assets/profileImage.png";
 import useAuth from "../../../hook/use-auth";
@@ -49,7 +50,7 @@ export default function TestCalendar() {
   const {
     authUser: { positionId },
   } = useAuth();
-  const { shiftType, nurses } = useShift();
+  const { shiftType, nurses, createShift, editShift, deleteShift } = useShift();
 
   const [shifts, setShifts] = useState([]);
   const [tempShift, setTempShift] = useState(null);
@@ -61,7 +62,7 @@ export default function TestCalendar() {
   const [isEdit, setEdit] = useState(false);
   const [headerText, setHeader] = useState("");
   const [shiftDate, setDate] = useState([]);
-  const [shiftNotes, setNotes] = useState("");
+  // const [shiftNotes, setNotes] = useState("");
   const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
   //handle edit schedule button
@@ -73,10 +74,14 @@ export default function TestCalendar() {
   //handle change select shiftType
   const [selectedShiftType, setSelectedShiftType] = useState("");
   const handleShiftTypeChange = (e) => {
+    // console.log("option selected value", e.target.value);
     setSelectedShiftType(e.target.value);
   };
 
   const getShiftTypeTitle = () => {
+    // console.log("shiftType", shiftType);
+    // console.log("selectedShiftType", selectedShiftType);
+    // console.log(selectedShiftType);
     // console.log(selectedShiftType);
     // if (!selectedShiftType) return "";
     const selectedType = shiftType.find((el) => el.id === +selectedShiftType);
@@ -84,40 +89,62 @@ export default function TestCalendar() {
     return selectedType && selectedType.typeOfShift;
   };
 
-  const saveEvent = useCallback(() => {
+  const saveEvent = useCallback(async () => {
+    //check if user is really select type of shift
+    if (!selectedShiftType) {
+      toast.error("Please select a shift type");
+      return;
+    }
+
     const start = new Date(shiftDate[0]);
     const end = new Date(shiftDate[1]);
     const newEvent = {
       id: tempShift.id,
       title: getShiftTypeTitle(),
+      // shiftType.find((el) => el.id === parseInt(selectedShiftType)).typeOfShift,
       // formatDate("HH:mm", start)
       // + " - "
       // + formatDate("HH:mm", end)
-      notes: shiftNotes,
+      // notes: shiftNotes,
       start: start,
+      shiftTypeId: parseInt(selectedShiftType),
       // end: end,
       resource: tempShift.resource,
+      userId: tempShift.resource,
       // slot: tempShift.slot,
     };
     if (isEdit) {
-      // const updatedShifts = shifts.map((shift) =>
-      //   shift.id === tempShift.id ? newEvent : shift
-      // );
-      // setShifts(updatedShifts);
+      const updatedShifts = shifts.map((shift) =>
+        shift.id === tempShift.id ? newEvent : shift
+      );
+      setShifts(updatedShifts);
 
       // update the event in the list
-      const index = shifts.findIndex((x) => x.id === tempShift.id);
-      const newEventList = [...shifts];
+      // const index = shifts.findIndex((x) => x.id === tempShift.id);
+      // const newEventList = [...shifts];
 
-      newEventList.splice(index, 1, newEvent);
-      setShifts(newEventList);
+      // newEventList.splice(index, 1, newEvent);
+      // setShifts(newEventList);
+      // console.log(shifts);
     } else {
       // add the new event to the list
-      setShifts([...shifts, newEvent]);
+      // setShifts([...shifts, newEvent]);
+
+      console.log(newEvent);
+      setShifts((prevShifts) => [...prevShifts, newEvent]);
+      createShift(newEvent);
     }
     // close the popup
     setPopupOpen(false);
-  }, [isEdit, shifts, shiftNotes, tempShift, shiftDate]);
+  }, [
+    isEdit,
+    shifts,
+    // shiftNotes
+    tempShift,
+    shiftDate,
+    selectedShiftType,
+    // getShiftTypeTitle,
+  ]);
 
   const deleteEvent = useCallback(
     (event) => {
@@ -129,16 +156,18 @@ export default function TestCalendar() {
 
   const loadPopupForm = useCallback((event) => {
     setDate([event.start, event.end]);
-    setNotes(event.notes);
+    // setNotes(event.notes);
   }, []);
 
   // handle popup form changes
   const notesChange = useCallback((ev) => {
-    setNotes(ev.target.value);
+    // setNotes(ev.target.value);
   }, []);
 
   const onDeleteClick = useCallback(() => {
     deleteEvent(tempShift);
+    console.log("tempShift", tempShift);
+    deleteShift(tempShift.id);
     setPopupOpen(false);
     setSnackbarOpen(true);
   }, [deleteEvent, tempShift]);
@@ -240,29 +269,6 @@ export default function TestCalendar() {
     setPopupOpen(false);
   }, [isEdit, shifts]);
 
-  const handleExtendDefaultEvent = useCallback((args) => {
-    const d = args.start;
-    const start = new Date(
-      d.getFullYear(),
-      d.getMonth(),
-      d.getDate()
-      // args.slot === 1 ? 7 : 12
-    );
-    const end = new Date(
-      d.getFullYear(),
-      d.getMonth(),
-      d.getDate()
-      // args.slot === 1 ? 13 : 18
-    );
-
-    return {
-      title: formatDate("HH:mm", start) + " - " + formatDate("HH:mm", end),
-      start: start,
-      end: end,
-      resource: args.resource,
-    };
-  }, []);
-
   const renderMyResource = useCallback(
     (resource) => (
       <div className="employee-shifts-cont">
@@ -296,14 +302,16 @@ export default function TestCalendar() {
       const shiftsData = await shiftApi.fetchShiftsByDepartmentId();
       const mappedShifts = shiftsData.data.shifts.map((shift) => ({
         id: shift.id,
-        start: new Date(shift.date),
+        date: new Date(shift.date),
         title: shift.shiftType.typeOfShift,
         resource: shift.userId,
       }));
       setShifts(mappedShifts);
+      console.log(shifts);
+      // setShifts(shiftsData.data.shifts);
     };
     get();
-  }, [nurses]);
+  }, [nurses, selectedShiftType, shiftType]);
 
   return (
     <div>
@@ -362,6 +370,7 @@ export default function TestCalendar() {
             onChange={handleShiftTypeChange}
             value={selectedShiftType}
           >
+            <option disabled value="" />
             {shiftType.map((el) => (
               <option key={el.id} value={el.id}>
                 {el.typeOfShift}

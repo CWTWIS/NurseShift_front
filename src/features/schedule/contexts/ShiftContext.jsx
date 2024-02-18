@@ -26,6 +26,43 @@ export default function ShiftContextProvider({ children }) {
     get();
   }, [authUser]);
 
+  const createShift = async (shiftData) => {
+    try {
+      console.log("shiftData", shiftData);
+      // console.log(shiftData.start.toISOString());
+      const transformData = {
+        userId: shiftData.userId,
+        date: shiftData.start.toISOString(),
+        shiftTypeId: shiftData.shiftTypeId,
+      };
+      console.log(transformData);
+      const response = await shiftApi.createShift(transformData);
+      return response.data;
+    } catch (error) {
+      console.error("Error creating shift:", error);
+      throw error;
+    }
+  };
+
+  const editShift = async (shiftId, shiftData) => {
+    try {
+      const response = await shiftApi.editShift(shiftId, shiftData);
+      return response.data;
+    } catch (error) {
+      console.error("Error editing shift:", error);
+      throw error;
+    }
+  };
+
+  const deleteShift = async (shiftId) => {
+    try {
+      await shiftApi.deleteShift(shiftId);
+    } catch (error) {
+      console.error("Error deleting shift:", error);
+      throw error;
+    }
+  };
+
   return (
     <ShiftContext.Provider
       value={{
@@ -33,6 +70,9 @@ export default function ShiftContextProvider({ children }) {
         nurses,
         // shiftsSameDepartment,
         personalShifts,
+        createShift,
+        editShift,
+        deleteShift,
       }}
     >
       {children}
