@@ -29,10 +29,10 @@ export default function ShiftContextProvider({ children }) {
   const createShift = async (shiftData) => {
     try {
       console.log("shiftData", shiftData);
-      // console.log(shiftData.start.toISOString());
+      console.log(shiftData.start.toISOString());
       const transformData = {
         userId: shiftData.userId,
-        date: shiftData.start.toISOString(),
+        date: new Date(shiftData.start).toISOString(),
         shiftTypeId: shiftData.shiftTypeId,
       };
       console.log(transformData);
@@ -46,7 +46,10 @@ export default function ShiftContextProvider({ children }) {
 
   const editShift = async (shiftId, shiftData) => {
     try {
+      console.log("shiftId", shiftId);
+      console.log("shiftData", shiftData);
       const response = await shiftApi.editShift(shiftId, shiftData);
+      console.log("response", response);
       return response.data;
     } catch (error) {
       console.error("Error editing shift:", error);

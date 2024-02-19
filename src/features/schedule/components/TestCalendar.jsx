@@ -20,6 +20,7 @@ import profileImage from "../../../assets/profileImage.png";
 import useAuth from "../../../hook/use-auth";
 import useShift from "../../../hook/ีuse-shift";
 import * as shiftApi from "../../../api/shift";
+import ButtonR from "../../../components/Button";
 
 setOptions({
   theme: "ios",
@@ -114,6 +115,7 @@ export default function TestCalendar() {
       // slot: tempShift.slot,
     };
     if (isEdit) {
+      editShift(newEvent.id, newEvent);
       const updatedShifts = shifts.map((shift) =>
         shift.id === tempShift.id ? newEvent : shift
       );
@@ -143,6 +145,7 @@ export default function TestCalendar() {
     tempShift,
     shiftDate,
     selectedShiftType,
+
     // getShiftTypeTitle,
   ]);
 
@@ -302,7 +305,7 @@ export default function TestCalendar() {
       const shiftsData = await shiftApi.fetchShiftsByDepartmentId();
       const mappedShifts = shiftsData.data.shifts.map((shift) => ({
         id: shift.id,
-        date: new Date(shift.date),
+        date: new Date(shift.date).setHours(0, 0, 0, 0),
         title: shift.shiftType.typeOfShift,
         resource: shift.userId,
       }));
@@ -311,7 +314,7 @@ export default function TestCalendar() {
       // setShifts(shiftsData.data.shifts);
     };
     get();
-  }, [nurses, selectedShiftType, shiftType]);
+  }, [nurses, selectedShiftType, shiftType, shifts]);
 
   return (
     <div>
@@ -324,12 +327,13 @@ export default function TestCalendar() {
         {shifts.map((el) => el.id + " ")}
       </div>
       {positionId === 1 && (
-        <Button
-          color={!isHeadEdit ? "primary" : "success"}
+        <ButtonR
+          bg={!isHeadEdit ? "blue" : "green"}
           onClick={handleHeadEdit}
+          color="white"
         >
           {!isHeadEdit ? "Edit schedule" : "Complete"}
-        </Button>
+        </ButtonR>
       )}
       <Eventcalendar
         view={viewSettings}

@@ -1,6 +1,6 @@
 const bgClass = {
-  blue: "bg-blue-500 hover:bg-blue-600",
-  green: "bg-green-500 hover:bg-green-600",
+  blue: "bg-sky-600 hover:bg-sky-700",
+  green: "bg-lime-500 hover:bg-lime-600",
   gray: "bg-gray-200 hover:bg-gray-300",
 };
 
