@@ -51,7 +51,14 @@ export default function TestCalendar() {
   const {
     authUser: { positionId },
   } = useAuth();
-  const { shiftType, nurses, createShift, editShift, deleteShift } = useShift();
+  const {
+    shiftType,
+    nurses,
+    createShift,
+    editShift,
+    deleteShift,
+    shiftsSameDepartment,
+  } = useShift();
 
   const [shifts, setShifts] = useState([]);
   const [tempShift, setTempShift] = useState(null);
@@ -64,7 +71,7 @@ export default function TestCalendar() {
   const [headerText, setHeader] = useState("");
   const [shiftDate, setDate] = useState([]);
   // const [shiftNotes, setNotes] = useState("");
-  const [isSnackbarOpen, setSnackbarOpen] = useState(false);
+  // const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
   //handle edit schedule button
   const [isHeadEdit, setIsHeadEdit] = useState(false);
@@ -90,7 +97,7 @@ export default function TestCalendar() {
     return selectedType && selectedType.typeOfShift;
   };
 
-  const saveEvent = useCallback(async () => {
+  const saveEvent = useCallback(() => {
     //check if user is really select type of shift
     if (!selectedShiftType) {
       toast.error("Please select a shift type");
@@ -98,6 +105,8 @@ export default function TestCalendar() {
     }
 
     const start = new Date(shiftDate[0]);
+    console.log(start);
+    console.log(tempShift);
     const end = new Date(shiftDate[1]);
     const newEvent = {
       id: tempShift.id,
@@ -107,7 +116,7 @@ export default function TestCalendar() {
       // + " - "
       // + formatDate("HH:mm", end)
       // notes: shiftNotes,
-      start: start,
+      start: tempShift.date || start,
       shiftTypeId: parseInt(selectedShiftType),
       // end: end,
       resource: tempShift.resource,
@@ -115,11 +124,17 @@ export default function TestCalendar() {
       // slot: tempShift.slot,
     };
     if (isEdit) {
+      // const updatedShifts = shifts.map((shift) =>
+      //   shift.id === tempShift.id ? newEvent : shift
+      // );
+      // setShifts(updatedShifts);
+      // setShifts((prevShifts) => [...prevShifts, newEvent]);
       editShift(newEvent.id, newEvent);
-      const updatedShifts = shifts.map((shift) =>
-        shift.id === tempShift.id ? newEvent : shift
+      setShifts((prevShifts) =>
+        prevShifts.map((shift) =>
+          shift.id === tempShift.id ? newEvent : shift
+        )
       );
-      setShifts(updatedShifts);
 
       // update the event in the list
       // const index = shifts.findIndex((x) => x.id === tempShift.id);
@@ -131,10 +146,9 @@ export default function TestCalendar() {
     } else {
       // add the new event to the list
       // setShifts([...shifts, newEvent]);
-
-      console.log(newEvent);
-      setShifts((prevShifts) => [...prevShifts, newEvent]);
+      // console.log(newEvent);
       createShift(newEvent);
+      setShifts((prevShifts) => [...prevShifts, newEvent]);
     }
     // close the popup
     setPopupOpen(false);
@@ -145,7 +159,6 @@ export default function TestCalendar() {
     tempShift,
     shiftDate,
     selectedShiftType,
-
     // getShiftTypeTitle,
   ]);
 
@@ -172,7 +185,7 @@ export default function TestCalendar() {
     console.log("tempShift", tempShift);
     deleteShift(tempShift.id);
     setPopupOpen(false);
-    setSnackbarOpen(true);
+    // setSnackbarOpen(true);
   }, [deleteEvent, tempShift]);
 
   // scheduler options
@@ -184,13 +197,14 @@ export default function TestCalendar() {
       setHeader(
         "<div>Edit " +
           // resource.firstName +
-          '</div><div class="employee-shifts-day">' +
-          formatDate("DDDD", new Date(event.start)) +
-          " " +
-          // slot.name +
-          "," +
-          formatDate("DD MMMM YYYY", new Date(event.start)) +
           "</div>"
+        // <div class="employee-shifts-day">' +
+        // formatDate("DDDD", new Date(event.start)) +
+        // " " +
+        // // slot.name +
+        // "," +
+        // formatDate("DD MMMM YYYY", new Date(event.start)) +
+        // "</div>"
       );
       // setMinTime(event.slot === 1 ? "07:00" : "12:00");
       // setMaxTime(event.slot === 1 ? "13:00" : "18:00");
@@ -310,11 +324,11 @@ export default function TestCalendar() {
         resource: shift.userId,
       }));
       setShifts(mappedShifts);
-      console.log(shifts);
+      // console.log(shifts);
       // setShifts(shiftsData.data.shifts);
     };
     get();
-  }, [nurses, selectedShiftType, shiftType, shifts]);
+  }, [nurses, selectedShiftType, shiftType, tempShift]);
 
   return (
     <div>
@@ -415,7 +429,7 @@ export default function TestCalendar() {
           </div>
         )}
       </Popup>
-      <Snackbar
+      {/* <Snackbar
         message="Event deleted"
         isOpen={isSnackbarOpen}
         onClose={handleSnackbarClose}
@@ -425,7 +439,7 @@ export default function TestCalendar() {
           },
           text: "Undo",
         }}
-      />
+      /> */}
     </div>
   );
 }
