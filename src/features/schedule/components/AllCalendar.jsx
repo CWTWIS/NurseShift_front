@@ -20,7 +20,7 @@ import profileImage from "../../../assets/profileImage.png";
 import useAuth from "../../../hook/use-auth";
 import useShift from "../../../hook/ีuse-shift";
 import * as shiftApi from "../../../api/shift";
-import ButtonR from "../../../components/Button";
+import ButtonComponent from "../../../components/Button";
 
 setOptions({
   theme: "ios",
@@ -51,14 +51,7 @@ export default function TestCalendar() {
   const {
     authUser: { positionId },
   } = useAuth();
-  const {
-    shiftType,
-    nurses,
-    createShift,
-    editShift,
-    deleteShift,
-    shiftsSameDepartment,
-  } = useShift();
+  const { shiftType, nurses, createShift, editShift, deleteShift } = useShift();
 
   const [shifts, setShifts] = useState([]);
   const [tempShift, setTempShift] = useState(null);
@@ -121,6 +114,12 @@ export default function TestCalendar() {
       // end: end,
       resource: tempShift.resource,
       userId: tempShift.resource,
+      color:
+        parseInt(selectedShiftType) === 1
+          ? "yellow"
+          : parseInt(selectedShiftType) === 2
+          ? "orange"
+          : "blue",
       // slot: tempShift.slot,
     };
     if (isEdit) {
@@ -288,19 +287,23 @@ export default function TestCalendar() {
 
   const renderMyResource = useCallback(
     (resource) => (
-      <div className="employee-shifts-cont">
-        <div className="employee-shifts-name">
-          {resource.firstName} {resource.lastName}
+      <div className="employee-shifts-cont gap-2">
+        <div className="flex justify-center items-center">
+          <img
+            className="employee-shifts-avatar"
+            src={resource.img || profileImage}
+            alt="Avatar"
+          />
         </div>
-        <div className="employee-shifts-title">
-          {resource.position.typeOfPosition} NURSE
+        <div>
+          <div className="employee-shifts-name">
+            {resource.firstName} {resource.lastName}
+          </div>
+          <div className="employee-shifts-title">
+            {resource.position.typeOfPosition} NURSE
+          </div>
+          <div className="employee-shifts-mobile">Tel: {resource.mobile}</div>
         </div>
-        {/* <div className="employee-shifts-mobile">Tel: {resource.mobile}</div> */}
-        <img
-          className="employee-shifts-avatar"
-          src={resource.img || profileImage}
-          alt="Avatar"
-        />
       </div>
     ),
     []
@@ -321,6 +324,12 @@ export default function TestCalendar() {
         id: shift.id,
         date: new Date(shift.date).setHours(0, 0, 0, 0),
         title: shift.shiftType.typeOfShift,
+        color:
+          shift.shiftType.id === 1
+            ? "yellow"
+            : shift.shiftType.id === 2
+            ? "orange"
+            : "blue",
         resource: shift.userId,
       }));
       setShifts(mappedShifts);
@@ -331,24 +340,26 @@ export default function TestCalendar() {
   }, [nurses, selectedShiftType, shiftType, tempShift]);
 
   return (
-    <div>
-      <div>
-        <p className="underline">Shift type</p>{" "}
-        {shiftType.map((el) => el.typeOfShift + " ")}
-        <p className="underline">Nurses in the same department</p>{" "}
-        {nurses.map((el) => el.firstName + " ")}
-        <p className="underline">Shifts from same department</p>{" "}
-        {shifts.map((el) => el.id + " ")}
+    <div className="flex flex-col gap-3">
+      {/* <div>
+          <p className="underline">Shift type</p>{" "}
+          {shiftType.map((el) => el.typeOfShift + " ")}
+          <p className="underline">Nurses in the same department</p>{" "}
+          {nurses.map((el) => el.firstName + " ")}
+          <p className="underline">Shifts from same department</p>{" "}
+          {shifts.map((el) => el.id + " ")}
+        </div> */}
+      <div className="flex justify-end">
+        {positionId === 1 && (
+          <ButtonComponent
+            bg={!isHeadEdit ? "blue" : "green"}
+            onClick={handleHeadEdit}
+            color="white"
+          >
+            {!isHeadEdit ? "Edit schedule" : "Complete"}
+          </ButtonComponent>
+        )}
       </div>
-      {positionId === 1 && (
-        <ButtonR
-          bg={!isHeadEdit ? "blue" : "green"}
-          onClick={handleHeadEdit}
-          color="white"
-        >
-          {!isHeadEdit ? "Edit schedule" : "Complete"}
-        </ButtonR>
-      )}
       <Eventcalendar
         view={viewSettings}
         data={shifts}

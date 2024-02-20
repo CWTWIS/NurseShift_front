@@ -21,7 +21,20 @@ export default function ShiftContextProvider({ children }) {
       // const getShifts = await shiftApi.fetchShiftsByDepartmentId();
       // setShiftsSameDepartment(getShifts.data.shifts);
       const getPersonalShifts = await shiftApi.fetchShiftsByUserId();
-      setPersonalShifts(getPersonalShifts.data.shifts);
+      const mappedShifts = getPersonalShifts.data.shifts.map((shift) => ({
+        id: shift.id,
+        date: new Date(shift.date).setHours(0, 0, 0, 0),
+        title: shift.shiftType.typeOfShift,
+        color:
+          shift.shiftType.id === 1
+            ? "yellow"
+            : shift.shiftType.id === 2
+            ? "orange"
+            : "blue",
+        resource: shift.userId,
+      }));
+      setPersonalShifts(mappedShifts);
+      // setPersonalShifts(getPersonalShifts.data.shifts);
     };
     get();
   }, [authUser]);

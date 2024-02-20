@@ -6,6 +6,18 @@
     background-color: #f0f2f5;
 } */
 
+.mbsc-timeline-row {
+    height: 80px;
+}
+
+.mbsc-timeline-column {
+    width: 100px;
+}
+
+.mbsc-timeline-header-date {
+    width: 100px;
+}
+
 .employee-shifts-day {
     font-size: 14px;
     font-weight: 600;
@@ -19,18 +31,20 @@
 
 .employee-shifts-cont {
     position: relative;
-    padding-left: 42px;
-    max-height: 40px;
+    /* padding-left: 42px; */
+    max-height: 80px;
+    display: flex;
 }
 
 .employee-shifts-avatar {
-    position: absolute;
+    /* position: absolute; */
     max-height: 40px;
     max-width: 40px;
-    top: 18px;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    left: 20px;
+    border-radius: 50%;
+    /* top: 18px; */
+    /* -webkit-transform: translate(-50%, -50%); */
+    /* transform: translate(-50%, -50%); */
+    /* left: 20px; */
 }
 
 .employee-shifts-name {
@@ -56,5 +70,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 40px;
+}
+
+.mbsc-calendar-label {
     height: 40px;
 }
