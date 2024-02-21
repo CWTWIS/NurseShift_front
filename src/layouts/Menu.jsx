@@ -1,18 +1,20 @@
 import { useLocation } from "react-router-dom";
 import MenuItem from "./MenuItem";
-
-const menuList = [
-  {
-    id: 1,
-    to: "/",
-    title: "All",
-  },
-  { id: 2, to: "/personal", title: "Personal" },
-  //   { id: 3, to: "/request", title: "Request" },
-];
+import useAuth from "../hook/use-auth";
 
 export default function Menu() {
   const { pathName } = useLocation();
+  const { authUser } = useAuth();
+
+  const menuList = [
+    {
+      id: 1,
+      to: "/",
+      title: "All",
+    },
+    { id: 2, to: `/personal/${authUser.id}`, title: "Personal" },
+    //   { id: 3, to: "/request", title: "Request" },
+  ];
 
   return (
     <nav className="flex gap-2 justify-center py-1">

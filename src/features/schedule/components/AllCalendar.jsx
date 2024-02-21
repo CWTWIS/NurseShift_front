@@ -14,6 +14,7 @@ import {
   Dropdown,
 } from "@mobiscroll/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import profileImage from "../../../assets/profileImage.png";
@@ -23,7 +24,7 @@ import * as shiftApi from "../../../api/shift";
 import ButtonComponent from "../../../components/Button";
 
 setOptions({
-  theme: "ios",
+  theme: "material",
   themeVariant: "light",
 });
 
@@ -79,6 +80,9 @@ export default function TestCalendar() {
     setSelectedShiftType(e.target.value);
   };
 
+  //handle navigate to profile
+  const navigate = useNavigate();
+
   const getShiftTypeTitle = () => {
     // console.log("shiftType", shiftType);
     // console.log("selectedShiftType", selectedShiftType);
@@ -116,10 +120,10 @@ export default function TestCalendar() {
       userId: tempShift.resource,
       color:
         parseInt(selectedShiftType) === 1
-          ? "yellow"
+          ? "#FFF59D"
           : parseInt(selectedShiftType) === 2
           ? "orange"
-          : "blue",
+          : "#1A237E",
       // slot: tempShift.slot,
     };
     if (isEdit) {
@@ -290,13 +294,22 @@ export default function TestCalendar() {
       <div className="employee-shifts-cont gap-2">
         <div className="flex justify-center items-center">
           <img
-            className="employee-shifts-avatar"
+            className="employee-shifts-avatar hover:cursor-pointer"
+            role="button"
             src={resource.img || profileImage}
             alt="Avatar"
+            onClick={() => {
+              navigate(`/personal/${resource.id}`);
+            }}
           />
         </div>
         <div>
-          <div className="employee-shifts-name">
+          <div
+            className="employee-shifts-name hover:underline hover:cursor-pointer"
+            onClick={() => {
+              navigate(`/personal/${resource.id}`);
+            }}
+          >
             {resource.firstName} {resource.lastName}
           </div>
           <div className="employee-shifts-title">
@@ -326,10 +339,10 @@ export default function TestCalendar() {
         title: shift.shiftType.typeOfShift,
         color:
           shift.shiftType.id === 1
-            ? "yellow"
+            ? "#FFF59D"
             : shift.shiftType.id === 2
             ? "orange"
-            : "blue",
+            : "#1A237E",
         resource: shift.userId,
       }));
       setShifts(mappedShifts);

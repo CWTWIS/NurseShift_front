@@ -9,7 +9,7 @@ export default function ShiftContextProvider({ children }) {
   const [shiftType, setShiftType] = useState([]);
   const [nurses, setNurses] = useState([]);
   // const [shiftsSameDepartment, setShiftsSameDepartment] = useState([]);
-  const [personalShifts, setPersonalShifts] = useState([]);
+  // const [personalShifts, setPersonalShifts] = useState([]);
 
   const { authUser } = useAuth();
   useEffect(() => {
@@ -20,20 +20,20 @@ export default function ShiftContextProvider({ children }) {
       setNurses(getNurses.data.allUsers);
       // const getShifts = await shiftApi.fetchShiftsByDepartmentId();
       // setShiftsSameDepartment(getShifts.data.shifts);
-      const getPersonalShifts = await shiftApi.fetchShiftsByUserId();
-      const mappedShifts = getPersonalShifts.data.shifts.map((shift) => ({
-        id: shift.id,
-        date: new Date(shift.date).setHours(0, 0, 0, 0),
-        title: shift.shiftType.typeOfShift,
-        color:
-          shift.shiftType.id === 1
-            ? "yellow"
-            : shift.shiftType.id === 2
-            ? "orange"
-            : "blue",
-        resource: shift.userId,
-      }));
-      setPersonalShifts(mappedShifts);
+      // const getPersonalShifts = await shiftApi.fetchShiftsByUserId();
+      // const mappedShifts = getPersonalShifts.data.shifts.map((shift) => ({
+      //   id: shift.id,
+      //   date: new Date(shift.date).setHours(0, 0, 0, 0),
+      //   title: shift.shiftType.typeOfShift,
+      //   color:
+      //     shift.shiftType.id === 1
+      //       ? "#FFF59D"
+      //       : shift.shiftType.id === 2
+      //       ? "orange"
+      //       : "#1A237E",
+      //   resource: shift.userId,
+      // }));
+      // setPersonalShifts(mappedShifts);
       // setPersonalShifts(getPersonalShifts.data.shifts);
     };
     get();
@@ -85,7 +85,7 @@ export default function ShiftContextProvider({ children }) {
         shiftType,
         nurses,
         // shiftsSameDepartment,
-        personalShifts,
+        // personalShifts,
         createShift,
         editShift,
         deleteShift,
