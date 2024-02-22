@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 export const AuthContext = createContext();
 
 import * as authApi from "../../../api/auth";
+import * as userApi from "../../../api/user";
 
 import { getToken, storeToken, clearToken } from "../../../utils/local-storage";
 
@@ -45,9 +46,15 @@ export default function AuthContextProvider({ children }) {
     clearToken();
   };
 
+  const updateUser = async (user) => {
+    console.log(user);
+    const res = await userApi.editProfile(user);
+    setAuthUser((prev) => ({ ...prev, ...res.data }));
+  };
+
   return (
     <AuthContext.Provider
-      value={{ authUser, initialLoading, login, register, logout }}
+      value={{ authUser, initialLoading, login, register, logout, updateUser }}
     >
       {children}
     </AuthContext.Provider>

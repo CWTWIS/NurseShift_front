@@ -22,6 +22,7 @@ import useAuth from "../../../hook/use-auth";
 import useShift from "../../../hook/ีuse-shift";
 import * as shiftApi from "../../../api/shift";
 import ButtonComponent from "../../../components/Button";
+import Avatar from "../../../components/Avatar";
 
 setOptions({
   theme: "material",
@@ -293,15 +294,16 @@ export default function TestCalendar() {
     (resource) => (
       <div className="employee-shifts-cont gap-2">
         <div className="flex justify-center items-center">
-          <img
-            className="employee-shifts-avatar hover:cursor-pointer"
+          <Avatar
+            className="employee-shifts-avatar"
             role="button"
-            src={resource.img || profileImage}
+            src={resource.profileImage || profileImage}
             alt="Avatar"
             onClick={() => {
               navigate(`/personal/${resource.id}`);
             }}
-          />
+            onHover="hover:cursor-pointer"
+          ></Avatar>
         </div>
         <div>
           <div

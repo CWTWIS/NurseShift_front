@@ -45,7 +45,7 @@ export default function RegisterForm() {
     } catch (err) {
       if (err.response?.data.message === "EMAIL_IN_USE") {
         return setError({
-          email: "This mail address is already in use",
+          email: "This email address is already in use",
         });
       }
       toast.error("Internal server error");

@@ -23,9 +23,11 @@ const registerSchema = Joi.object({
     }),
   positionId: Joi.number().integer().min(1).max(3).required().messages({
     "any.required": "Position is required",
+    "number.base": "Position is required",
   }),
   departmentId: Joi.number().integer().min(1).max(6).required().messages({
-    "any.required": "Position is required",
+    "any.required": "Department is required",
+    "number.base": "Department is required",
   }),
   password: Joi.string()
     .required()
