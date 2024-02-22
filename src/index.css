@@ -31,20 +31,14 @@
 
 .employee-shifts-cont {
     position: relative;
-    /* padding-left: 42px; */
     max-height: 80px;
     display: flex;
 }
 
 .employee-shifts-avatar {
-    /* position: absolute; */
     max-height: 40px;
     max-width: 40px;
     border-radius: 50%;
-    /* top: 18px; */
-    /* -webkit-transform: translate(-50%, -50%); */
-    /* transform: translate(-50%, -50%); */
-    /* left: 20px; */
 }
 
 .employee-shifts-name {

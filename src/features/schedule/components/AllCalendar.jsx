@@ -1,16 +1,10 @@
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import {
   Button,
-  Datepicker,
   Eventcalendar,
   formatDate,
-  Input,
-  OptionsProvider,
   Popup,
-  Select,
   setOptions,
-  Snackbar,
-  Textarea,
   Dropdown,
 } from "@mobiscroll/react";
 import { useCallback, useEffect, useMemo, useState } from "react";
@@ -57,16 +51,10 @@ export default function TestCalendar() {
 
   const [shifts, setShifts] = useState([]);
   const [tempShift, setTempShift] = useState(null);
-  // const [start, startRef] = useState(null);
-  // const [end, endRef] = useState(null);
-  // const [min, setMinTime] = useState("");
-  // const [max, setMaxTime] = useState("");
   const [isPopupOpen, setPopupOpen] = useState(false);
   const [isEdit, setEdit] = useState(false);
   const [headerText, setHeader] = useState("");
   const [shiftDate, setDate] = useState([]);
-  // const [shiftNotes, setNotes] = useState("");
-  // const [isSnackbarOpen, setSnackbarOpen] = useState(false);
 
   //handle edit schedule button
   const [isHeadEdit, setIsHeadEdit] = useState(false);
@@ -77,7 +65,6 @@ export default function TestCalendar() {
   //handle change select shiftType
   const [selectedShiftType, setSelectedShiftType] = useState("");
   const handleShiftTypeChange = (e) => {
-    // console.log("option selected value", e.target.value);
     setSelectedShiftType(e.target.value);
   };
 
@@ -85,11 +72,6 @@ export default function TestCalendar() {
   const navigate = useNavigate();
 
   const getShiftTypeTitle = () => {
-    // console.log("shiftType", shiftType);
-    // console.log("selectedShiftType", selectedShiftType);
-    // console.log(selectedShiftType);
-    // console.log(selectedShiftType);
-    // if (!selectedShiftType) return "";
     const selectedType = shiftType.find((el) => el.id === +selectedShiftType);
     console.log("Selected shift type:", selectedType);
     return selectedType && selectedType.typeOfShift;
@@ -109,14 +91,8 @@ export default function TestCalendar() {
     const newEvent = {
       id: tempShift.id,
       title: getShiftTypeTitle(),
-      // shiftType.find((el) => el.id === parseInt(selectedShiftType)).typeOfShift,
-      // formatDate("HH:mm", start)
-      // + " - "
-      // + formatDate("HH:mm", end)
-      // notes: shiftNotes,
       start: tempShift.date || start,
       shiftTypeId: parseInt(selectedShiftType),
-      // end: end,
       resource: tempShift.resource,
       userId: tempShift.resource,
       color:
@@ -125,46 +101,22 @@ export default function TestCalendar() {
           : parseInt(selectedShiftType) === 2
           ? "orange"
           : "#1A237E",
-      // slot: tempShift.slot,
     };
     if (isEdit) {
-      // const updatedShifts = shifts.map((shift) =>
-      //   shift.id === tempShift.id ? newEvent : shift
-      // );
-      // setShifts(updatedShifts);
-      // setShifts((prevShifts) => [...prevShifts, newEvent]);
       editShift(newEvent.id, newEvent);
       setShifts((prevShifts) =>
         prevShifts.map((shift) =>
           shift.id === tempShift.id ? newEvent : shift
         )
       );
-
-      // update the event in the list
-      // const index = shifts.findIndex((x) => x.id === tempShift.id);
-      // const newEventList = [...shifts];
-
-      // newEventList.splice(index, 1, newEvent);
-      // setShifts(newEventList);
-      // console.log(shifts);
     } else {
       // add the new event to the list
-      // setShifts([...shifts, newEvent]);
-      // console.log(newEvent);
       createShift(newEvent);
       setShifts((prevShifts) => [...prevShifts, newEvent]);
     }
     // close the popup
     setPopupOpen(false);
-  }, [
-    isEdit,
-    shifts,
-    // shiftNotes
-    tempShift,
-    shiftDate,
-    selectedShiftType,
-    // getShiftTypeTitle,
-  ]);
+  }, [isEdit, shifts, tempShift, shiftDate, selectedShiftType]);
 
   const deleteEvent = useCallback(
     (event) => {
@@ -176,12 +128,6 @@ export default function TestCalendar() {
 
   const loadPopupForm = useCallback((event) => {
     setDate([event.start, event.end]);
-    // setNotes(event.notes);
-  }, []);
-
-  // handle popup form changes
-  const notesChange = useCallback((ev) => {
-    // setNotes(ev.target.value);
   }, []);
 
   const onDeleteClick = useCallback(() => {
@@ -189,29 +135,13 @@ export default function TestCalendar() {
     console.log("tempShift", tempShift);
     deleteShift(tempShift.id);
     setPopupOpen(false);
-    // setSnackbarOpen(true);
   }, [deleteEvent, tempShift]);
 
   // scheduler options
   const handleEventClick = useCallback(
     (args) => {
       const event = args.event;
-      // const resource = nurses.find((r) => r.id === event.resource);
-      // const slot = mySlots.find((s) => s.id === event.slot);
-      setHeader(
-        "<div>Edit " +
-          // resource.firstName +
-          "</div>"
-        // <div class="employee-shifts-day">' +
-        // formatDate("DDDD", new Date(event.start)) +
-        // " " +
-        // // slot.name +
-        // "," +
-        // formatDate("DD MMMM YYYY", new Date(event.start)) +
-        // "</div>"
-      );
-      // setMinTime(event.slot === 1 ? "07:00" : "12:00");
-      // setMaxTime(event.slot === 1 ? "13:00" : "18:00");
+      setHeader("<div>Edit " + "</div>");
       setEdit(true);
       setTempShift({ ...event });
       // fill popup form with event data
@@ -224,19 +154,15 @@ export default function TestCalendar() {
   const handleEventCreated = useCallback(
     (args) => {
       const event = args.event;
-      // const slot = mySlots.find((s) => s.id === event.slot);
       setHeader(
         '<div>New shift</div><div class="employee-shifts-day">' +
           formatDate("DDDD", new Date(event.start)) +
           " " +
-          // slot.name +
           "," +
           formatDate("DD MMMM YYYY", new Date(event.start)) +
           "</div>"
       );
       setEdit(false);
-      // setMinTime(event.slot === 1 ? "07:00" : "12:00");
-      // setMaxTime(event.slot === 1 ? "13:00" : "18:00");
       setTempShift(event);
       // fill popup form with event data
       loadPopupForm(event);
@@ -324,14 +250,6 @@ export default function TestCalendar() {
     []
   );
 
-  const dateChange = useCallback((args) => {
-    setDate(args.value);
-  }, []);
-
-  const handleSnackbarClose = useCallback(() => {
-    setSnackbarOpen(false);
-  }, []);
-
   useEffect(() => {
     const get = async () => {
       const shiftsData = await shiftApi.fetchShiftsByDepartmentId();
@@ -348,22 +266,12 @@ export default function TestCalendar() {
         resource: shift.userId,
       }));
       setShifts(mappedShifts);
-      // console.log(shifts);
-      // setShifts(shiftsData.data.shifts);
     };
     get();
   }, [nurses, selectedShiftType, shiftType, tempShift]);
 
   return (
     <div className="flex flex-col gap-3">
-      {/* <div>
-          <p className="underline">Shift type</p>{" "}
-          {shiftType.map((el) => el.typeOfShift + " ")}
-          <p className="underline">Nurses in the same department</p>{" "}
-          {nurses.map((el) => el.firstName + " ")}
-          <p className="underline">Shifts from same department</p>{" "}
-          {shifts.map((el) => el.id + " ")}
-        </div> */}
       <div className="flex justify-end">
         {positionId === 1 && (
           <ButtonComponent
@@ -383,7 +291,6 @@ export default function TestCalendar() {
         dragToResize={false}
         dragToMove={false}
         clickToCreate={isHeadEdit && true}
-        // extendDefaultEvent={handleExtendDefaultEvent}
         onEventClick={isHeadEdit && handleEventClick}
         onEventCreated={isHeadEdit && handleEventCreated}
         onEventDeleted={handleEventDeleted}
@@ -402,13 +309,6 @@ export default function TestCalendar() {
         cssClass="employee-shifts-popup"
       >
         <div className="mbsc-form-group">
-          {/* <select onChange={handleShiftTypeChange} value={selectedShiftType}>
-            {shiftType.map((el) => (
-              <option key={el.id} value={el.id}>
-                {el.typeOfShift}
-              </option>
-            ))}
-          </select> */}
           <Dropdown
             label="Choose"
             onChange={handleShiftTypeChange}
@@ -421,27 +321,7 @@ export default function TestCalendar() {
               </option>
             ))}
           </Dropdown>
-          {/* <Input ref={startRef} dropdown={true} label="Shift start"></Input> */}
-          {/* <Input ref={endRef} dropdown={true} label="Shift end"></Input> */}
-          {/* <Datepicker
-            select="range"
-            controls={["time"]}
-            startInput={start}
-            endInput={end}
-            display="anchored"
-            showRangeLabels={false}
-            touchUi={false}
-            onChange={dateChange}
-            value={shiftDate}
-            stepMinute={30}
-            timeWheels="|h:mm A|"
-            minTime={min}
-            maxTime={max}
-          /> */}
         </div>
-        {/* <div className="mbsc-form-group">
-          <Textarea label="Notes" value={shiftNotes} onChange={notesChange} />
-        </div> */}
         {isEdit && (
           <div className="mbsc-button-group">
             <Button
@@ -455,17 +335,6 @@ export default function TestCalendar() {
           </div>
         )}
       </Popup>
-      {/* <Snackbar
-        message="Event deleted"
-        isOpen={isSnackbarOpen}
-        onClose={handleSnackbarClose}
-        button={{
-          action: () => {
-            setShifts((prevEvents) => [...prevEvents, tempShift]);
-          },
-          text: "Undo",
-        }}
-      /> */}
     </div>
   );
 }

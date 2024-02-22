@@ -8,8 +8,6 @@ export const ShiftContext = createContext();
 export default function ShiftContextProvider({ children }) {
   const [shiftType, setShiftType] = useState([]);
   const [nurses, setNurses] = useState([]);
-  // const [shiftsSameDepartment, setShiftsSameDepartment] = useState([]);
-  // const [personalShifts, setPersonalShifts] = useState([]);
 
   const { authUser } = useAuth();
   useEffect(() => {
@@ -18,23 +16,6 @@ export default function ShiftContextProvider({ children }) {
       setShiftType(getShiftType.data.shiftType);
       const getNurses = await shiftApi.fetchNursesInTheSameDepartment();
       setNurses(getNurses.data.allUsers);
-      // const getShifts = await shiftApi.fetchShiftsByDepartmentId();
-      // setShiftsSameDepartment(getShifts.data.shifts);
-      // const getPersonalShifts = await shiftApi.fetchShiftsByUserId();
-      // const mappedShifts = getPersonalShifts.data.shifts.map((shift) => ({
-      //   id: shift.id,
-      //   date: new Date(shift.date).setHours(0, 0, 0, 0),
-      //   title: shift.shiftType.typeOfShift,
-      //   color:
-      //     shift.shiftType.id === 1
-      //       ? "#FFF59D"
-      //       : shift.shiftType.id === 2
-      //       ? "orange"
-      //       : "#1A237E",
-      //   resource: shift.userId,
-      // }));
-      // setPersonalShifts(mappedShifts);
-      // setPersonalShifts(getPersonalShifts.data.shifts);
     };
     get();
   }, [authUser]);
@@ -84,8 +65,6 @@ export default function ShiftContextProvider({ children }) {
       value={{
         shiftType,
         nurses,
-        // shiftsSameDepartment,
-        // personalShifts,
         createShift,
         editShift,
         deleteShift,

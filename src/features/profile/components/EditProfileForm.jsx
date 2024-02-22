@@ -25,12 +25,6 @@ export default function EditProfileForm({ setOpen }) {
 
   const [error, setError] = useState({});
 
-  // const updateProfileImage = async (file) => {
-  //   const formData = new FormData(); //object key ===> value
-  //   formData.append("profileImage", file); //{profileImage: file}
-  //   await updateUser(formData);
-  // };
-
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();

@@ -55,7 +55,6 @@ export default function PersonalSchedule() {
         </Modal>
       )}
       <hr />
-      {/* <h1>Personal schedule</h1> */}
       <PersonalCalendar userId={selectedUser.id} />
     </div>
   );

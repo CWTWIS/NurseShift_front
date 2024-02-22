@@ -34,7 +34,6 @@ const router = createBrowserRouter([
     children: [
       { path: "", element: <AllSchedule /> },
       { path: "personal/:userId", element: <PersonalSchedule /> },
-      // { path: ":userId", element: <PersonalSchedule /> },
     ],
   },
 ]);

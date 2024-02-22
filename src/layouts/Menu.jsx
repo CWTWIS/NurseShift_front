@@ -13,7 +13,6 @@ export default function Menu() {
       title: "All",
     },
     { id: 2, to: `/personal/${authUser.id}`, title: "Personal" },
-    //   { id: 3, to: "/request", title: "Request" },
   ];
 
   return (
