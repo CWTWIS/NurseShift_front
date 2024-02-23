@@ -28,6 +28,7 @@ export default function RegisterForm() {
   const { register } = useAuth();
 
   const handleChangeInput = (e) => {
+    setError("");
     setInput({ ...input, [e.target.name]: e.target.value });
   };
 
@@ -43,9 +44,14 @@ export default function RegisterForm() {
       toast.success("register successfully");
       <Navigate to="/login" />;
     } catch (err) {
-      if (err.response?.data.message === "EMAIL_IN_USE") {
+      if (err.response.data.message === "EMAIL_IN_USE") {
         return setError({
           email: "This email address is already in use",
+        });
+      }
+      if (err.response.data.message === "MOBILE_IN_USE") {
+        return setError({
+          mobile: "This mobile number is already in use",
         });
       }
       toast.error("Internal server error");
